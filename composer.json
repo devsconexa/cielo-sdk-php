@@ -4,7 +4,7 @@
             "Cielo": "src"
         }
     },
-    "name": "johnnyqdp/cielo-api-3.0-php",
+    "name": "devsconexa/cielo-sdk-php",
     "description": "Cópia do SDK abandonado da Cielo",
     "authors": [
         {
