@@ -110,8 +110,25 @@ abstract class AbstractRequest
             case 400:
                 $exception = null;
                 $response  = json_decode($responseBody);
-
+                
+                /* Houveram casos em que 'response' era uma string e o foreach falhava pois estava tentando iterar sobre uma string. */
+                if (is_string($response)) {
+                    $response = array($response);
+                }
                 foreach ($response as $error) {
+                    /**
+                     * Este trecho de código foi adicionado para tratar o retorno da API da Cielo
+                     * que ao invés de enviar um array de objetos estava retornando um array de strings.
+                     * Caso venha uma string é extraído o código e a mensagem para montar um objeto genérico
+                     * mantendo o fluxo antigo da biblioteca.
+                     */
+                    if(is_string($error)){
+                        $arrError = explode(":", $error);
+                        $error = (object) [
+                            'Message' => !empty($arrError[1]) ? trim($arrError[1]) : "",
+                            'Code' =>  !empty($arrError[0]) ? trim($arrError[0]) : "",
+                        ];
+                    }
 
                     $cieloError = new CieloError($error->Message, $error->Code);
                     $exception  = new CieloRequestException('Request Error', $statusCode, $exception);
