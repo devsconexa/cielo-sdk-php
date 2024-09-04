@@ -51,6 +51,8 @@ class Payment implements \JsonSerializable
     private $authorizationCode;
 
     private $softDescriptor = "";
+    
+    private $partner;
 
     private $returnUrl;
 
@@ -173,6 +175,7 @@ class Payment implements \JsonSerializable
         $this->proofOfSale       = isset($data->ProofOfSale) ? $data->ProofOfSale : null;
         $this->authorizationCode = isset($data->AuthorizationCode) ? $data->AuthorizationCode : null;
         $this->softDescriptor    = isset($data->SoftDescriptor) ? $data->SoftDescriptor : null;
+        $this->partner           = isset($data->Partner) ? $data->Partner : null;
         $this->provider          = isset($data->Provider) ? $data->Provider : null;
         $this->paymentId         = isset($data->PaymentId) ? $data->PaymentId : null;
         $this->type              = isset($data->Type) ? $data->Type : null;
@@ -1101,6 +1104,18 @@ class Payment implements \JsonSerializable
     public function setInstructions($instructions)
     {
         $this->instructions = $instructions;
+
+        return $this;
+    }
+    
+    /**
+     * @param $partner
+     *
+     * @return $this
+     */
+    public function setPartner($partner)
+    {
+        $this->partner = $partner;
 
         return $this;
     }
